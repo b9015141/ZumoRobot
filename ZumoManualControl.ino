@@ -15,23 +15,25 @@
   //array light sensors
   uint16_t lineSensorValues[3] = {0, 0, 0};
 
-  const uint16_t motorSpeed = 350;
-  const uint16_t turnSpeed = 200;
+  const uint16_t motorSpeed = 200;
+  const uint16_t turnSpeed = 150;
  
 
-  #define FORWARD_SPEED 200
-  #define EDGE_THRESHOLD 200
+  #define FORWARD_SPEED 150
+  #define EDGE_THRESHOLD 150
   #define EDGE_TOLERANCE 50    //The tolerance is a way to calculate how close to square is the robot.
   #define KPsq 0.6
+
+ 
+ // Global Variables
 
   bool proxLeftActive;
   bool proxFrontActive;
   bool proxRightActive;
   bool turnAngle;
 
- // Global Variables
  int curSpeed = 0;
- int acceleration = 2;
+ int acceleration = 1;
 
  const int turnSensorReset();
  const int turnSensorUpdate();
@@ -82,64 +84,89 @@
  }
 
  //Go forward
- void forward() {
-   int angle = 0;
-   turnSensorUpdate();
-   angle = (((int32_t)turnAngle >> 16) * 360) >> 16;
+  void forward() {
 
-   //move forward, adjusting motor speed to hold heading
-   motors.setSpeeds(curSpeed + (angle * 5), curSpeed - (angle * 5));
- }
+    int angle = 0;
+    turnSensorUpdate();
+    angle = (((int32_t)turnAngle >> 16) * 360) >> 16;
+
+    //move forward, adjusting motor speed to hold heading
+    motors.setSpeeds(curSpeed + (angle * 5), curSpeed - (angle * 5));
+
+  }
 
  //Reverse
- void reverse() {
+  void reverse() {
+
    motors.setSpeeds(-motorSpeed, -motorSpeed);
- }
+
+  }
 
  //Look left
- void scanLeft() {
+  void scanLeft() {
+
    motors.setSpeeds(-curSpeed, -curSpeed);
- }
+
+  }
 
  //Look right
- void scanRight() {
-   motors.setSpeeds(curSpeed, -curSpeed);
- }
+  void scanRight() {
 
- //Change direction to left
- void forwardLeft() {
+    motors.setSpeeds(curSpeed, -curSpeed);
+
+  }
+
+ //Change direction to the left
+  void forwardLeft() {
+
    motors.setSpeeds(curSpeed / 2, curSpeed);
- }
+
+  }
 
  //Change direction to the right
- void forwardRight() {
-   motors.setSpeeds(curSpeed, curSpeed / 2);
- }
+  void forwardRight() {
 
+   motors.setSpeeds(curSpeed, curSpeed / 2);
+   
+  }
+ 
+
+  // Calibrating LineSensors
 
   void calLightSensors(int CalTime) { 
+
     buttonA.waitForButton(); 
     buzzer.playFrequency(440, 200, 15); 
     
-    for (uint16_t i = 0; i < 400; i++) { 
+      for (uint16_t i = 0; i < 400; i++) { 
         Serial1.print(i); 
         lineSensors.calibrate();
       } 
-      buzzer.playFrequency(440, 50, 15); 
-      Serial1.print("Cal Done"); 
-      delay(1000);
+    
+    buzzer.playFrequency(440, 50, 15); 
+    Serial1.print("Cal Done"); 
+    delay(1000);
   }
+  
 
+  // Setting motorSpeed once sensors are calibrated
+  
   void drive2line(int motorSpeed) {
+
     Serial1.println("Press button A..");
     Serial1.println("Moving forward...");
     motors.setSpeeds(motorSpeed,motorSpeed);
+
     do {
+
       lineSensors.readCalibrated(lineSensorValues);
+
     } while (lineSensorValues[0]>EDGE_THRESHOLD && lineSensorValues[2]>EDGE_THRESHOLD);
+    
     motors.setSpeeds(0,0);
     Serial1.println("Stopping...");
   } 
+
 
   //1. the value of the left and right light sensors.
   //2. Calculate the error of the left and right light sensors.
@@ -147,21 +174,29 @@
   //4. Apply the correction factor to the motor power.
   //5. Repeat as long as the left and right errors are larger than a certain tolerance.
   void square2line(int tol) {
+
    int errorLeft, errorRight, corrLeft, corrRight;
 
     do {
+
       lineSensors.readCalibrated(lineSensorValues);
+
       errorLeft=lineSensorValues[0]-500;
       errorRight=lineSensorValues[2]-500;
+
       corrLeft=-errorLeft*KPsq;
       corrRight=-errorRight*KPsq;
+
       motors.setLeftSpeed(corrLeft);
       motors.setRightSpeed(corrRight);
+
     } while (abs(errorLeft)>tol||abs(errorRight)>tol);
+
     motors.setSpeeds(0,0);
+
   }   
 
-  
+
   void loop() {
 
     Serial1.println("Press A"); 
@@ -173,25 +208,21 @@
     drive2line(FORWARD_SPEED);
     square2line(EDGE_TOLERANCE);
    
-   //Proximity sensors
 
-   // Send IR pulses and read the proximity sensors.
-    proxSensors.read();
+   //Proximity sensors
+  
+    proxSensors.read();  // Send IR pulses and read the proximity sensors.
 
     int left_sensor = proxSensors.countsLeftWithLeftLeds();
     int centerLeftSensor = proxSensors.countsFrontWithLeftLeds();
     int centerRightSensor = proxSensors.countsFrontWithRightLeds();
     int right_sensor = proxSensors.countsRightWithRightLeds();
-
-    //Reading PROXIMITY SENSORS without sending pulses
-    // proxLeftActive = proxSensors.readBasicLeft();
-    // proxFrontActive = proxSensors.readBasicFront();
-    // proxRightActive = proxSensors.readBasicRight();
+   
+    lineSensors.readCalibrated(lineSensorValues);  //Reading LINE SENSORS
+  } 
 
   
-    //Reading LINE SENSORS
-    lineSensors.readCalibrated(lineSensorValues);
-  } 
+  
 
 
 
