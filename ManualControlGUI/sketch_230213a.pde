@@ -10,6 +10,7 @@ int val;        // Data received from the serial port
 
 public void setup(){
   size(480, 320, JAVA2D);
+  
   createGUI();
   customGUI();
 
@@ -21,54 +22,23 @@ public void setup(){
 public void draw(){
   background(230);
   
+    if (key == 'A') {
+    leftButton_click1(leftButton.GEvent.click);
+    
+   } else if (key == 'D') {
+     rightButton_click1(rightButton.GEvent.click);
+    
+   } else if (key == 'W') {
+     fwButton_click1(fwButton.GEvent.click);
+    
+   } else if (key == 'S') {
+     bwButton_click1(bwButton.GEvent.click);
+   }
 }
 
 // Use this method to add additional statements
 // to customise the GUI controls
 public void customGUI(){
-  
-  void keyPressed()
-{
-  if ( key == CODED ) {
-    if ( keyCode == A ) {
-      leftButton_click1(leftButton.GEvent.click)
-      
-    } else if ( keyCode == D ) {
-      rightButton_click1(rightButton.GEvent.click)
-     
-    } else if ( keyCode == W ) {
-      fwButton_click1(fwButton.GEvent.click)
-     
-    } else if ( keyCode == S ) {
-     bwButton_click1(bwButton.GEvent.click)
-    }
-  }  
-}
-
-void keyReleased()
-{
-  switch ( key ) {
-    case 'r':
-      c = color( 255, 0, 0 );
-      break;
-    case 'g':
-      c = color( 0, 255, 0 );
-      break;
-    case 'b':
-      c = color( 0, 0, 255 );
-      break;
-    case 'c':
-      c = color( 0, 255, 255 );
-      break;
-    case 'm':
-      c = color( 255, 0, 255 );
-      break;
-    case 'y':
-      c = color( 255, 255, 0 );
-      break;
-    default:
-      break;
-  }
-}
-
+ 
+ 
 }
