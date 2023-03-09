@@ -40,6 +40,13 @@ Mode 2 : Fully autonomous - Zumo will be detecting the rooms and objects using t
 8. Swith ON 
 9. And watch the magic do it's work !!!
 
+
+For Manual we will have to connect to processing software 
+
+1. Make sure XBee PRO S1 is connected to PC 
+2. < String portName = "COM3"; > change the portName depending on your PC, XCTU will let you know your portName
+
+
 # Sources 
 
 https://www.pololu.com/docs/0J63
