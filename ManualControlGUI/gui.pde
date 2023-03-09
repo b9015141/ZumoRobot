@@ -16,22 +16,22 @@
 
 public void fwButton_click1(GButton source, GEvent event) { //_CODE_:fwButton:339083:
   println("button1 - GButton >> GEvent." + event + " @ " + millis());
-  myPort.write('W');
+  myPort.write('w');
 } //_CODE_:fwButton:339083:
 
 public void leftButton_click1(GButton source, GEvent event) { //_CODE_:leftButton:987253:
   println("button2 - GButton >> GEvent." + event + " @ " + millis());
-  myPort.write('A');
+  myPort.write('a');
 } //_CODE_:leftButton:987253:
 
 public void rightButton_click1(GButton source, GEvent event) { //_CODE_:rightButton:309864:
   println("button3 - GButton >> GEvent." + event + " @ " + millis());
-  myPort.write('D');
+  myPort.write('d');
 } //_CODE_:rightButton:309864:
 
 public void bwButton_click1(GButton source, GEvent event) { //_CODE_:bwButton:525324:
   println("button4 - GButton >> GEvent." + event + " @ " + millis());
-  myPort.write('S');
+  myPort.write('s');
 } //_CODE_:bwButton:525324:
 
 

@@ -22,17 +22,17 @@ public void setup(){
 public void draw(){
   background(230);
   
-    if (key == 'A') {
-    leftButton_click1(leftButton.GEvent.click);
+    if (key == 'a') {
+    leftButton_click1(leftButton, GEvent.CLICKED);
     
-   } else if (key == 'D') {
-     rightButton_click1(rightButton.GEvent.click);
+   } else if (key == 'd') {
+     rightButton_click1(rightButton, GEvent.CLICKED);
     
-   } else if (key == 'W') {
-     fwButton_click1(fwButton.GEvent.click);
+   } else if (key == 'w') {
+     fwButton_click1(fwButton, GEvent.CLICKED);
     
-   } else if (key == 'S') {
-     bwButton_click1(bwButton.GEvent.click);
+   } else if (key == 's') {
+     bwButton_click1(bwButton, GEvent.CLICKED);
    }
 }
 
